@@ -1,15 +1,36 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import Cards from './components/Cards/Cards.jsx';
 import Navbar from './components/Navbar/Navbar.jsx';
 import axios from 'axios';
 import About from './components/About/About.jsx';
 import Detail from './components/Detail/Detail.jsx';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import Form from './components/Form/Form.jsx';
 
 function App() {
    //creando un estado local
    const [characters, setCharacters] = useState([]); // --> [state, changeState] memoria 2
+
+   const [ access, setAccess ] = useState(false);
+
+   const location = useLocation();
+   const navigate = useNavigate();
+
+   //DB FALSA
+   const EMAIL = 'batman@gmail.com';
+   const PASSWORD = 'robin1234';
+   
+   useEffect(() => {
+      !access && navigate('/');
+   }, [access]);
+
+   function login(userData) {
+      if (userData.password === PASSWORD && userData.username === EMAIL) {
+         setAccess(true);
+         navigate('/home');
+      }
+   }
 
    //SE GUARDAN POR REFERENCIA
    async function onSearch(id){
@@ -44,9 +65,19 @@ function App() {
 
    return (
       <div className='App'>
-         <Navbar onSearch={onSearch} />
-
+         { 
+            location.pathname !== '/' ?
+            <Navbar onSearch={onSearch} /> :
+            undefined
+         }
+         
          <Routes>
+            {/* LOGIN */}
+            <Route path='/' element={
+               <Form login={login} />
+            }/>
+
+            {/* HOME */}
             <Route path='/Home' element={
                <Cards 
                   characters={characters}
@@ -54,10 +85,12 @@ function App() {
                />
             }/>
 
+            {/* ABOUT */}
             <Route path='/About' element={
                <About />
             }/>
 
+            {/* DETAIL */}
             <Route path='/detail/:detailId' element={<Detail />}/>
          </Routes>
          
