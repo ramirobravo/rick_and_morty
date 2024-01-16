@@ -3,6 +3,9 @@ import './App.css';
 import Cards from './components/Cards/Cards.jsx';
 import Navbar from './components/Navbar/Navbar.jsx';
 import axios from 'axios';
+import About from './components/About/About.jsx';
+import Detail from './components/Detail/Detail.jsx';
+import { Routes, Route } from 'react-router-dom';
 
 function App() {
    //creando un estado local
@@ -42,10 +45,22 @@ function App() {
    return (
       <div className='App'>
          <Navbar onSearch={onSearch} />
-         <Cards 
-            characters={characters}
-            onClose={onClose}
-         />
+
+         <Routes>
+            <Route path='/Home' element={
+               <Cards 
+                  characters={characters}
+                  onClose={onClose}
+               />
+            }/>
+
+            <Route path='/About' element={
+               <About />
+            }/>
+
+            <Route path='/detail/:detailId' element={<Detail />}/>
+         </Routes>
+         
       </div>
    );
 }
