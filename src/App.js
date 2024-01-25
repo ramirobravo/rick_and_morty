@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import './App.css';
 import Cards from './components/Cards/Cards.jsx';
 import Navbar from './components/Navbar/Navbar.jsx';
 import axios from 'axios';
 import About from './components/About/About.jsx';
 import Detail from './components/Detail/Detail.jsx';
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import Form from './components/Form/Form.jsx';
+import Favorites from './components/Favorites/Favorites.jsx';
 
 function App() {
    //creando un estado local
@@ -92,6 +93,10 @@ function App() {
 
             {/* DETAIL */}
             <Route path='/detail/:detailId' element={<Detail />}/>
+         
+            {/* FAVORITES */}
+            <Route path='/favorites' element={<Favorites />}/>
+
          </Routes>
          
       </div>

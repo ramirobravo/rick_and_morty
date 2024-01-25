@@ -1,12 +1,54 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styles from './Card.module.css';
+import { useDispatch, useSelector } from "react-redux";
+import { addFav, removeFav } from "../../redux/actions/actions";
 
 let { div, nameStyle, imageStyle, btn, data } = styles;
 
 export default function Card({ id, name, status, species, gender, origin, image, onClose }) {
+   const dispatch = useDispatch();
+   const myFavorites = useSelector(state => state.myFavorites);
+
+   const [isFav, setIsFav] = useState(false);
+
+   //recibimos personaje del API
+   let char = {
+      name: name,
+      gender: gender,
+      species: species,
+      id: id,
+      image: image,
+   }
+
+   useEffect(() => {
+      myFavorites.forEach((fav) => {
+         if (fav.id === id) {
+            setIsFav(true);
+         }
+      });
+   }, [myFavorites]);
+
+   const handleFavorite = ()=>{
+      if (isFav) {
+         setIsFav(false);
+         dispatch(removeFav(id));
+      }else{
+         setIsFav(true);
+         dispatch(addFav(char));
+      }
+   }
+
    return (
       <div className={div}>
          <button onClick={()=>(onClose(id))} className={btn}>X</button>
+         {
+            isFav ? (
+               <button onClick={handleFavorite}>❤️</button>
+            ) : (
+               <button onClick={handleFavorite}>🤍</button>
+            )
+         }
          <Link  to={`/detail/${id}`}>
             <h2 className={nameStyle}>{name}</h2>
          </Link>
