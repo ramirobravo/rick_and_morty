@@ -1,29 +1,40 @@
+import { useState } from 'react';
 import './App.css';
-import Card from './components/Card/Card.jsx';
 import Cards from './components/Cards/Cards.jsx';
-import SearchBar from './components/SearchBar/SearchBar.jsx';
-
-//emula la base de datos
-import characters, { Rick } from './data.js';
+import Nav from './components/Nav/Nav';
+import axios from 'axios';
 
 function App() {
 
-   const onClose = (id) => window.alert(`Emulamos que se cierra la card id ${id}`);
+   const [ characters, setCharacters] = useState([]);
+
+   //character = [] //memoria1
+
+   const onClose = (id) => {
+      //crea un nuevo arreglo sin el personaje
+      const filteredSate = characters.filter((char)=> char.id !== id);
+      setCharacters(filteredSate);
+   };
+
+   const onSearch = (id) => {
+      axios(`https://rickandmortyapi.com/api/character/${id}`).then(
+         (reponse) => {
+            if (reponse.data.name) {
+               setCharacters((oldChars) => [...oldChars, reponse.data]);
+            } else {
+               window.alert(`¡No hay personajes con ID: ${id}!`);
+            }
+         }
+      );
+   };
+
+   //character = [characterSearched ] //memoria2
+   
 
    return (
       <div className='App'>
-         <SearchBar onSearch={(characterID) => window.alert(characterID)} />
+         <Nav onSearch={onSearch} />
          <Cards characters={characters} onClose={onClose} />
-         {/* <Card
-            id={Rick.id}
-            name={Rick.name}
-            status={Rick.status}
-            species={Rick.species}
-            gender={Rick.gender}
-            origin={Rick.origin.name}
-            image={Rick.image}
-            onClose={onClose}
-         /> */}
       </div>
    );
 }

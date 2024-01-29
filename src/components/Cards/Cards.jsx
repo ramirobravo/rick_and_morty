@@ -13,7 +13,7 @@ export default function Cards({ characters, onClose }) {
             species={species}
             gender={gender}
             image={image}
-            onClose={()=> onClose(id)}
+            onClose={onClose}
          />)
       }
    </div>;
