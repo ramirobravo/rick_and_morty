@@ -14,7 +14,7 @@ function App() {
       <div className='App'>
          <SearchBar onSearch={(characterID) => window.alert(characterID)} />
          <Cards characters={characters} onClose={onClose} />
-         <Card
+         {/* <Card
             id={Rick.id}
             name={Rick.name}
             status={Rick.status}
@@ -23,7 +23,7 @@ function App() {
             origin={Rick.origin.name}
             image={Rick.image}
             onClose={onClose}
-         />
+         /> */}
       </div>
    );
 }
