@@ -1,18 +1,35 @@
-import { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
 import Cards from './components/Cards/Cards.jsx';
 import Nav from './components/Nav/Nav';
 import About from './components/About/About.jsx';
 import Detail from './components/Detail/Detail.jsx';
-
+import Form from './components/Form/Form.jsx';
 
 function App() {
 
    const [ characters, setCharacters] = useState([]);
+   const [ access, setAccess ] = useState(false);
 
-   //character = [] //memoria1
+   const location = useLocation();
+   const navigate = useNavigate();
+
+   //DB FALSA
+   const EMAIL = 'batman@gmail.com';
+   const PASSWORD = 'robin1234';
+
+   useEffect(() => {
+      !access && navigate('/');
+   }, [access])
+
+   function login(userData) {
+      if (userData.password === PASSWORD && userData.username === EMAIL) {
+         setAccess(true);
+         navigate('/home');
+      }
+   }
 
    const onClose = (id) => {
       //crea un nuevo arreglo sin el personaje
@@ -37,8 +54,17 @@ function App() {
 
    return (
       <div className='App'>
-         <Nav onSearch={onSearch} />
+         { 
+            location.pathname !== '/' ?
+            <Nav onSearch={onSearch} /> :
+            undefined
+         }
          <Routes>
+
+            {/* LOGIN */}
+            <Route path='/' element={
+               <Form login={login} />
+            }/>
 
             {/* HOME */}
             <Route path='/home' element={
