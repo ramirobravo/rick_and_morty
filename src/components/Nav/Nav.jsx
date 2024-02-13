@@ -10,6 +10,7 @@ export default function Nav({ onSearch }) {
       <div className={container}>
          <Link className={btn} to='/home'>Home</Link>
          <Link className={btn} to='/about'>About</Link>
+         <Link className={btn} to='/favorites'>Favorites</Link>
          <SearchBar onSearch={onSearch}/>
       </div>
    );
